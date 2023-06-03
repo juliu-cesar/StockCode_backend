@@ -14,53 +14,124 @@ public class ProductDAO {
     this.conn = connection;
   }
 
-  public void createProduct(FieldsProduct fieldsData) {
-    Product product = new Product(fieldsData.id(), fieldsData.brand_id(), fieldsData.category_id(), fieldsData.name(),
-        fieldsData.price(), fieldsData.product_description());
+  public void insertProduct(FieldsProduct fieldsData) {
     PreparedStatement ps;
-
     String sql = "INSERT INTO product(id,brand_id,category_id,name,price,product_description) VALUES(?,?,?,?,?,?)";
     try {
       ps = conn.prepareStatement(sql);
 
-      ps.setInt(1, product.getId());
-      ps.setInt(2, product.getBrand_id());
-      ps.setInt(3, product.getCategory_id());
-      ps.setString(4, product.getName());
-      ps.setBigDecimal(5, product.getPrice());
-      ps.setString(6, product.getProduct_description());
+      ps.setInt(1, fieldsData.id());
+      ps.setInt(2, fieldsData.brand_id());
+      ps.setInt(3, fieldsData.category_id());
+      ps.setString(4, fieldsData.name());
+      ps.setBigDecimal(5, fieldsData.price());
+      ps.setString(6, fieldsData.product_description());
 
       ps.execute();
       ps.close();
       conn.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
 
-  public ArrayList<Product> listProducts() {
+  public ArrayList<Product> productsList() {
     String sql = "SELECT * FROM product";
     return getList(sql);
   }
-  public ArrayList<Product> searchByName(String search) {    
-    String sql = "SELECT * FROM product WHERE name LIKE "+search;
+  public ArrayList<Product> searchByBrand(Integer brand_id) {
+    String sql = "SELECT * FROM product WHERE brand_id = " + brand_id;
     return getList(sql);
   }
-  public ArrayList<Product> searchByBrand(String search) {    
-    String sql = "SELECT * FROM product WHERE brand LIKE "+search;
+  public ArrayList<Product> searchByCategory(Integer category_id) {
+    String sql = "SELECT * FROM product WHERE category_id = " + category_id;
     return getList(sql);
   }
 
-  // public String updateName(String name){
-  //   if(name.trim() == ""){
-  //      return "[ERRO] nome invalido. Não foi possível alterar o nome.";      
-  //   }
-  //   String sql = "UPDATE product SET name = "+name;
-  // }
+  // -------------------- \\ --------------------
+  // #TODO implement the search by name
 
+  // public ArrayList<Product> searchByName(String search) {
+    //   String sql = "SELECT * FROM product WHERE name LIKE " + search;
+    //   return getList(sql);
+    // }
+  // -------------------- \\ --------------------
 
-  private ArrayList<Product> getList(String sql){
+  public void updateBrand(Integer brand_id, Integer id) {
+    PreparedStatement ps;
+    String sql = "UPDATE product SET brand_id = ? WHERE id = ?";
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, brand_id);
+      ps.setInt(1, id);
+
+      ps.execute();
+      ps.close();
+      conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  public void updateCategory(Integer category_id, Integer id) {
+    PreparedStatement ps;
+    String sql = "UPDATE product SET category_id = ? WHERE id = ?";
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, category_id);
+      ps.setInt(1, id);
+
+      ps.execute();
+      ps.close();
+      conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  public void updateName(String name, Integer id) {
+    PreparedStatement ps;
+    String sql = "UPDATE product SET name = ? WHERE id = ?";
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, name);
+      ps.setInt(1, id);
+
+      ps.execute();
+      ps.close();
+      conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  public void updatePrice(BigDecimal price, Integer id) {
+    PreparedStatement ps;
+    String sql = "UPDATE product SET price = ? WHERE id = ?";
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setBigDecimal(1, price);
+      ps.setInt(1, id);
+
+      ps.execute();
+      ps.close();
+      conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void deleteProduct(Integer id) {
+    PreparedStatement ps;
+    String sql = "DELETE FROM product WHERE id = " + id;
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.execute();
+      ps.close();
+      conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private ArrayList<Product> getList(String sql) {
     ArrayList<Product> products = new ArrayList<>();
     PreparedStatement ps;
     ResultSet rs;
