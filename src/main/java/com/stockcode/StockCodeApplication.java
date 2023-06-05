@@ -29,6 +29,6 @@ public class StockCodeApplication {
     // System.out.println(price.setScale(2, RoundingMode.DOWN));
 
     ProductService prS = new ProductService();
-    prS.changeBrand(4678513, 6847514);
+    prS.changeProductBrand(4678513, 6847514);
   }
 }

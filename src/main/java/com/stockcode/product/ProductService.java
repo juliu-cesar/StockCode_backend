@@ -27,43 +27,47 @@ public class ProductService {
     Connection connection = connectionDB.getConnection();
     return new ProductDAO(connection).productList();
   }
-
-  public ArrayList<Product> searchByBrand(Integer brand_id) {
+  
+  public ArrayList<Product> searchProductByBrand(Integer brand_id) {
+    validateId(brand_id);
     Connection connection = connectionDB.getConnection();
     return new ProductDAO(connection).selectByBrand(brand_id);
   }
 
-  public ArrayList<Product> searchByCategory(Integer category_id) {
+  public ArrayList<Product> searchProductByCategory(Integer category_id) {
+    validateCategoryID(category_id);
     Connection connection = connectionDB.getConnection();
     return new ProductDAO(connection).selectByCategory(category_id);
   }
 
-  public void changeBrand(Integer brand_id, Integer id) {
+  public void changeProductBrand(Integer brand_id, Integer id) {
     validateId(id);
     validateBrandId(brand_id);
     Connection connection = connectionDB.getConnection();
     new ProductDAO(connection).updateBrand(brand_id, id);
   }
 
-  public void changeCategory(Integer category_id, Integer id) {
+  public void changeProductCategory(Integer category_id, Integer id) {
     validateId(id);
     validateCategoryID(category_id);
     Connection connection = connectionDB.getConnection();
     new ProductDAO(connection).updateBrand(category_id, id);
   }
-  public void changeName(String name, Integer id) {
+
+  public void changeProductName(String name, Integer id) {
     validateId(id);
     validateName(name);
     Connection connection = connectionDB.getConnection();
     new ProductDAO(connection).updateName(name, id);
   }
-  public void changePrice(BigDecimal price, Integer id) {
+
+  public void changeProductPrice(BigDecimal price, Integer id) {
     validateId(id);
     Connection connection = connectionDB.getConnection();
     new ProductDAO(connection).updatePrice(normalizePrice(price), id);
   }
 
-  public void removeProductFromList(Integer id){
+  public void removeProductFromList(Integer id) {
     validateId(id);
     Connection connection = connectionDB.getConnection();
     new ProductDAO(connection).deleteProduct(id);
@@ -86,10 +90,10 @@ public class ProductService {
 
   private void validateCategoryID(Integer id) {
     Boolean hasEightDigits = id > 9999999 && id < 100000000;
+    // TODO verify if brand_id and category_id exist.
     if (!hasEightDigits) {
       throw new RuntimeException("Categoria não existe ou identificador da categoria incorreto.");
     }
-    // TODO verify if brand_id and category_id exist.
   }
 
   private void validateName(String name) {
