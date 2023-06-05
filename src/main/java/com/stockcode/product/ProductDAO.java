@@ -14,7 +14,7 @@ public class ProductDAO {
     this.conn = connection;
   }
 
-  public void insertProduct(FieldsProduct fieldsData) {
+  public void insertProduct(FieldsProduct fieldsData, BigDecimal normalizedPrice) {
     PreparedStatement ps;
     String sql = "INSERT INTO product(id,brand_id,category_id,name,price,product_description) VALUES(?,?,?,?,?,?)";
     try {
@@ -24,7 +24,7 @@ public class ProductDAO {
       ps.setInt(2, fieldsData.brand_id());
       ps.setInt(3, fieldsData.category_id());
       ps.setString(4, fieldsData.name());
-      ps.setBigDecimal(5, fieldsData.price());
+      ps.setBigDecimal(5, normalizedPrice);
       ps.setString(6, fieldsData.product_description());
 
       ps.execute();
@@ -35,21 +35,24 @@ public class ProductDAO {
     }
   }
 
-  public ArrayList<Product> productsList() {
+  public ArrayList<Product> productList() {
     String sql = "SELECT * FROM product";
     return getList(sql);
   }
-  public ArrayList<Product> searchByBrand(Integer brand_id) {
+  public ArrayList<Product> selectByBrand(Integer brand_id) {
     String sql = "SELECT * FROM product WHERE brand_id = " + brand_id;
     return getList(sql);
   }
-  public ArrayList<Product> searchByCategory(Integer category_id) {
+  public ArrayList<Product> selectByCategory(Integer category_id) {
     String sql = "SELECT * FROM product WHERE category_id = " + category_id;
     return getList(sql);
   }
 
   // -------------------- \\ --------------------
   // #TODO implement the search by name
+
+  // WHAT IF THE SEARCH TEXT IS: 
+  // "nomePesquisa; DELETE FROM product WHERE id > 0;"
 
   // public ArrayList<Product> searchByName(String search) {
     //   String sql = "SELECT * FROM product WHERE name LIKE " + search;
