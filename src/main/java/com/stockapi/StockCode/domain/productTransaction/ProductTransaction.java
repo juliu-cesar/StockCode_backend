@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.productMovement;
+package com.stockapi.StockCode.domain.productTransaction;
 
 import java.math.BigDecimal;
 
@@ -12,16 +12,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "productMovement")
-@Entity(name = "ProductMovement")
+@Table(name = "productTransaction")
+@Entity(name = "ProductTransaction")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class ProductMovement {
+public class ProductTransaction {
 
   @EmbeddedId
-  private ProductMovementId id;
+  private ProductTransactionId id;
 
   @Enumerated(EnumType.STRING)
   private CategoriesOfMovements categoriesMovements;

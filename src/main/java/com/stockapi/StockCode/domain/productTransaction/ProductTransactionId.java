@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.productMovement;
+package com.stockapi.StockCode.domain.productTransaction;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class ProductMovementId implements Serializable {
+public class ProductTransactionId implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product productId;

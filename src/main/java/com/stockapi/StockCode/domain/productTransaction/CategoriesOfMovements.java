@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.productMovement;
+package com.stockapi.StockCode.domain.productTransaction;
 
 public enum CategoriesOfMovements {
   PURCHASE,

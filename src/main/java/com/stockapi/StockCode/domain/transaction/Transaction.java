@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Transaction {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -29,4 +30,9 @@ public class Transaction {
 
   private String description;
 
+  public Transaction(CreateTransactionDto dto) {
+    this.date = dto.date();
+    this.client = dto.client();
+    this.description = dto.description();
+  }
 }
