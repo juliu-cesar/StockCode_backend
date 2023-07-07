@@ -1,16 +1,14 @@
 package com.stockapi.StockCode.domain.transaction;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record ListTransactionDto(
     Long id,
-    CategoriesOfMovements movement,
     LocalDateTime date,
-    BigDecimal totalPrice,
+    String client,
     String description) {
   public ListTransactionDto(Transaction transaction) {
-    this(transaction.getId(), transaction.getMovement(), transaction.getDate(), transaction.getTotalPrice(),
+    this(transaction.getId(), transaction.getDate(), transaction.getClient(),
         transaction.getDescription());
   }
 }

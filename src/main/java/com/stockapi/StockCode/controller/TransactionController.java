@@ -20,7 +20,7 @@ public class TransactionController {
   private TransactionRepository repository;
 
   @GetMapping
-  public ResponseEntity<Page<ListTransactionDto>> ListAllBrands(
+  public ResponseEntity<Page<ListTransactionDto>> ListAllTransactions(
       @PageableDefault(size = 10, sort = { "date" }) Pageable pagination) {
 
     var dto = repository.findAll(pagination).map(ListTransactionDto::new);

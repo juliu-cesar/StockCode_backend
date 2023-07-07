@@ -1,11 +1,8 @@
 package com.stockapi.StockCode.domain.transaction;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,12 +23,9 @@ public class Transaction {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Enumerated(EnumType.STRING)
-  private CategoriesOfMovements movement;
-
   private LocalDateTime date;
 
-  private BigDecimal totalPrice;
+  private String client;
 
   private String description;
 
