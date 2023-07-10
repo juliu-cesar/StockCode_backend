@@ -16,8 +16,5 @@ public record ListTransactionDto(
     BigDecimal totalPrice,
     @Column(name = "description")
     String description) {
-  // public ListTransactionDto(Transaction transaction) {
-  //   this(transaction.getId(), transaction.getDate(), transaction.getClient(),
-  //       transaction.getDescription());
-  // }
+
 }

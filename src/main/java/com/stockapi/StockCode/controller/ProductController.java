@@ -24,7 +24,7 @@ public class ProductController {
   private ProductRepository repository;
 
   @GetMapping
-  public ResponseEntity<Page<ListProductsDto>> ListAllBrands(
+  public ResponseEntity<Page<ListProductsDto>> ListAllProducts(
       @PageableDefault(size = 10, sort = { "productName" }) Pageable pagination) {
 
     var dto = repository.findAll(pagination).map(ListProductsDto::new);

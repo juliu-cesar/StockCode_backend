@@ -41,10 +41,11 @@ public class TransactionController {
   private ProductTransactionRepository repositoryM;
 
   @GetMapping
-  public ResponseEntity<List<ListTransactionDto>> listAllTransactions(
-      @PageableDefault(size = 10, sort = { "date" }) Pageable pagination) {
+  public ResponseEntity<Page<ListTransactionDto>> listAllTransactions(
+      @PageableDefault(size = 10) Pageable pagination) {
 
-    var dto = repositoryT.findAllWithPrice();
+    var dto = repositoryT.findAllWithPrice(pagination);
+  
     return ResponseEntity.ok(dto);
   }
 
