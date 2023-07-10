@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.productTransaction;
+package com.stockapi.StockCode.domain.product;
 
 import jakarta.validation.constraints.NotNull;
 

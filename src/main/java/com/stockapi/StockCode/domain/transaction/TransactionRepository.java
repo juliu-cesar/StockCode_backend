@@ -17,4 +17,16 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
       """)
   Page<ListTransactionDto> findAllWithPrice(Pageable pagination);
 
+  @Query("""
+      select new com.stockapi.StockCode.domain.transaction.DetailTransactionDTO(
+      p.id, p.productName, b.brandName, pt.purchasePrice, pt.amount, (pt.purchasePrice * pt.amount) AS totalPrice, pt.categoriesMovements)
+        from ProductTransaction pt
+        join pt.id.productId p
+        join p.brand b
+        join pt.id.transactionId t
+        where t.id = :id
+        order by p.productName
+      """)
+  Page<DetailTransactionDTO> findTransactionAndDetailIt(Pageable pagination, Long id);
+
 }
