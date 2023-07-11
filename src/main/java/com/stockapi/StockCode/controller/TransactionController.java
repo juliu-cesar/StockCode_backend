@@ -1,7 +1,5 @@
 package com.stockapi.StockCode.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,18 +15,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stockapi.StockCode.domain.product.Product;
-import com.stockapi.StockCode.domain.product.ProductListDto;
 import com.stockapi.StockCode.domain.product.ProductRepository;
 import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
-import com.stockapi.StockCode.domain.transaction.DetailTransactionDTO;
+import com.stockapi.StockCode.domain.transaction.DetailProductReturnDTO;
+import com.stockapi.StockCode.domain.transaction.DetailTransactionProductDTO;
 import com.stockapi.StockCode.domain.transaction.ListTransactionDto;
-import com.stockapi.StockCode.domain.transaction.ProductReturnDto;
 import com.stockapi.StockCode.domain.transaction.Transaction;
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
-import com.stockapi.StockCode.domain.transaction.productTransaction.CategoriesOfMovements;
-import com.stockapi.StockCode.domain.transaction.productTransaction.ProductTransaction;
-import com.stockapi.StockCode.domain.transaction.productTransaction.ProductTransactionId;
-import com.stockapi.StockCode.domain.transaction.productTransaction.ProductTransactionRepository;
+import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProduct;
+import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProductId;
+import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProductRepository;
+import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturn;
+import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnId;
+import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnRepository;
+import com.stockapi.StockCode.domain.transaction.productReturn.RefoundDto;
 
 import jakarta.validation.Valid;
 
@@ -37,27 +37,29 @@ import jakarta.validation.Valid;
 public class TransactionController {
 
   @Autowired
-  private TransactionRepository repositoryT;
+  private TransactionRepository repositoryTransaction;
 
   @Autowired
-  private ProductRepository repositoryP;
+  private ProductRepository repositoryProduct;
 
   @Autowired
-  private ProductTransactionRepository repositoryPT;
+  private BuyProductRepository repositoryBuyProduct;
+
+  @Autowired
+  private ProductReturnRepository repositoryProductReturn;
 
   @PostMapping
   @Transactional
   public void createTransaction(@RequestBody @Valid CreateTransactionDto createTransactionDto) {
     var transaction = new Transaction(createTransactionDto);
-    repositoryT.save(transaction);
+    repositoryTransaction.save(transaction);
 
-    List<ProductListDto> productList = createTransactionDto.productList();
-    productList.forEach(productDto -> {
-      var product = repositoryP.getReferenceById(productDto.id());
-      var productTransaction = new ProductTransaction(new ProductTransactionId(product, transaction),
-          CategoriesOfMovements.SALE, product.getPrice(), productDto.amount(), null, null);
+    createTransactionDto.productList().forEach(dto -> {
+      var product = repositoryProduct.getReferenceById(dto.id());
+      var buyProduct = new BuyProduct(new BuyProductId(product, transaction), product.getPrice(),
+          dto.amount(), false, dto.description());
 
-      repositoryPT.save(productTransaction);
+      repositoryBuyProduct.save(buyProduct);
     });
   }
 
@@ -65,31 +67,45 @@ public class TransactionController {
   public ResponseEntity<Page<ListTransactionDto>> listAllTransactions(
       @PageableDefault(size = 10) Pageable pagination) {
 
-    var dto = repositoryT.findAllWithPrice(pagination);
+    var dto = repositoryTransaction.findAllWithPrice(pagination);
 
     return ResponseEntity.ok(dto);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Page<DetailTransactionDTO>> detailTransaction(@PageableDefault(size = 10) Pageable pagination,
+  public ResponseEntity<Page<DetailTransactionProductDTO>> detailTransaction(
+      @PageableDefault(size = 10) Pageable pagination,
       @PathVariable Long id) {
 
-    var dto = repositoryT.findTransactionAndDetailIt(pagination, id);
+    var dto = repositoryTransaction.findTransactionAndDetailIt(pagination, id);
+
+    return ResponseEntity.ok(dto);
+  }
+
+  @GetMapping("/refound/{id}")
+  public ResponseEntity<Page<DetailProductReturnDTO>> detailProductReturn(
+      @PageableDefault(size = 10) Pageable pagination,
+      @PathVariable Long id) {
+
+    var dto = repositoryProductReturn.findProductReturnAndDetailIt(pagination, id);
 
     return ResponseEntity.ok(dto);
   }
 
   @PutMapping
   @Transactional
-  public void productReturn(@RequestBody @Valid ProductReturnDto productReturnList) {
-    Transaction transaction = repositoryT.getReferenceById(productReturnList.transactionId());
+  public void productReturn(@RequestBody @Valid RefoundDto productReturnList) {
+    Transaction transaction = repositoryTransaction.getReferenceById(productReturnList.transactionId());
 
     productReturnList.productReturnList().forEach(dto -> {
-      Product product = repositoryP.getReferenceById(dto.productId());
-      var ptId = new ProductTransactionId(product, transaction);
-      var productTransaction = repositoryPT.findById(ptId);
+      Product product = repositoryProduct.getReferenceById(dto.productId());
+      var ptId = new BuyProductId(product, transaction);
+      var buyProduct = repositoryBuyProduct.findById(ptId);
+      buyProduct.productReturnUpdate(dto);
 
-      productTransaction.productReturnUpdate(dto);
+      var productReturn = new ProductReturn(new ProductReturnId(product, transaction), buyProduct.getPurchasePrice(),
+          dto.amountRefunded(), dto.reason(), dto.description());
+      repositoryProductReturn.save(productReturn);
     });
 
   }

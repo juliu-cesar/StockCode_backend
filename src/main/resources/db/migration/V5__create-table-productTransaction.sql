@@ -1,7 +1,6 @@
 create table product_transaction(
   product_id bigint not null,
   transaction_id bigint not null,
-  categories_movements varchar(100) not null,
   purchase_price decimal(10,2) not null,
   amount integer not null,
 
