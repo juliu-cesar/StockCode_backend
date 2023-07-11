@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.productTransaction;
+package com.stockapi.StockCode.domain.transaction.productTransaction;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

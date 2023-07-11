@@ -1,9 +1,9 @@
-package com.stockapi.StockCode.domain.productTransaction;
+package com.stockapi.StockCode.domain.transaction.productTransaction;
 
 import java.math.BigDecimal;
 
-import com.stockapi.StockCode.domain.product.ProductReturnListDto;
-import com.stockapi.StockCode.domain.product.ReasonOfReturn;
+import com.stockapi.StockCode.domain.product.productReturn.ProductReturnListDto;
+import com.stockapi.StockCode.domain.product.productReturn.ReasonOfReturn;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

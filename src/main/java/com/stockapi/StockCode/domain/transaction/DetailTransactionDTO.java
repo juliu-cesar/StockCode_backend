@@ -2,7 +2,7 @@ package com.stockapi.StockCode.domain.transaction;
 
 import java.math.BigDecimal;
 
-import com.stockapi.StockCode.domain.productTransaction.CategoriesOfMovements;
+import com.stockapi.StockCode.domain.transaction.productTransaction.CategoriesOfMovements;
 
 import jakarta.persistence.Column;
 

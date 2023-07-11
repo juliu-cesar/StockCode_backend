@@ -19,17 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stockapi.StockCode.domain.product.Product;
 import com.stockapi.StockCode.domain.product.ProductListDto;
 import com.stockapi.StockCode.domain.product.ProductRepository;
-import com.stockapi.StockCode.domain.product.ReasonOfReturn;
-import com.stockapi.StockCode.domain.productTransaction.CategoriesOfMovements;
-import com.stockapi.StockCode.domain.productTransaction.ProductTransaction;
-import com.stockapi.StockCode.domain.productTransaction.ProductTransactionId;
-import com.stockapi.StockCode.domain.productTransaction.ProductTransactionRepository;
 import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
 import com.stockapi.StockCode.domain.transaction.DetailTransactionDTO;
 import com.stockapi.StockCode.domain.transaction.ListTransactionDto;
 import com.stockapi.StockCode.domain.transaction.ProductReturnDto;
 import com.stockapi.StockCode.domain.transaction.Transaction;
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
+import com.stockapi.StockCode.domain.transaction.productTransaction.CategoriesOfMovements;
+import com.stockapi.StockCode.domain.transaction.productTransaction.ProductTransaction;
+import com.stockapi.StockCode.domain.transaction.productTransaction.ProductTransactionId;
+import com.stockapi.StockCode.domain.transaction.productTransaction.ProductTransactionRepository;
 
 import jakarta.validation.Valid;
 

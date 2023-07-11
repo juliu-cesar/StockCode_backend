@@ -2,7 +2,7 @@ package com.stockapi.StockCode.domain.transaction;
 
 import java.util.List;
 
-import com.stockapi.StockCode.domain.product.ProductReturnListDto;
+import com.stockapi.StockCode.domain.product.productReturn.ProductReturnListDto;
 
 import jakarta.validation.constraints.NotNull;
 
