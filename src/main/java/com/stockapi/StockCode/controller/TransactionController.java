@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stockapi.StockCode.domain.product.Product;
 import com.stockapi.StockCode.domain.product.ProductListDto;
 import com.stockapi.StockCode.domain.product.ProductRepository;
+import com.stockapi.StockCode.domain.product.ReasonOfReturn;
 import com.stockapi.StockCode.domain.productTransaction.CategoriesOfMovements;
 import com.stockapi.StockCode.domain.productTransaction.ProductTransaction;
 import com.stockapi.StockCode.domain.productTransaction.ProductTransactionId;
@@ -50,7 +51,7 @@ public class TransactionController {
   public void createTransaction(@RequestBody @Valid CreateTransactionDto createTransactionDto) {
     var transaction = new Transaction(createTransactionDto);
     repositoryT.save(transaction);
-    
+
     List<ProductListDto> productList = createTransactionDto.productList();
     productList.forEach(productDto -> {
       var product = repositoryP.getReferenceById(productDto.id());
@@ -60,44 +61,37 @@ public class TransactionController {
       repositoryPT.save(productTransaction);
     });
   }
-  
+
   @GetMapping
   public ResponseEntity<Page<ListTransactionDto>> listAllTransactions(
-    @PageableDefault(size = 10) Pageable pagination) {
-      
-      var dto = repositoryT.findAllWithPrice(pagination);
+      @PageableDefault(size = 10) Pageable pagination) {
 
-      return ResponseEntity.ok(dto);
+    var dto = repositoryT.findAllWithPrice(pagination);
+
+    return ResponseEntity.ok(dto);
   }
-  
+
   @GetMapping("/{id}")
   public ResponseEntity<Page<DetailTransactionDTO>> detailTransaction(@PageableDefault(size = 10) Pageable pagination,
       @PathVariable Long id) {
 
     var dto = repositoryT.findTransactionAndDetailIt(pagination, id);
-    
+
     return ResponseEntity.ok(dto);
   }
-  
+
   @PutMapping
   @Transactional
-  public void productReturn(@RequestBody @Valid ProductReturnDto productReturnList){
+  public void productReturn(@RequestBody @Valid ProductReturnDto productReturnList) {
     Transaction transaction = repositoryT.getReferenceById(productReturnList.transactionId());
-    
-    productReturnList.productReturnList().forEach(dto ->{
-      
+
+    productReturnList.productReturnList().forEach(dto -> {
       Product product = repositoryP.getReferenceById(dto.productId());
       var ptId = new ProductTransactionId(product, transaction);
-      System.out.println("\n ptId: "+ ptId);
       var productTransaction = repositoryPT.findById(ptId);
-      System.out.println("\n pt: "+ productTransaction);
-      
-      // System.out.println("\n reason: "+dto.reason());
-      
-      System.out.println("\n Antes de efetuar o update");
+
       productTransaction.productReturnUpdate(dto);
     });
-
 
   }
 

@@ -22,11 +22,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ProductTransactionId implements Serializable {
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product productId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id")
+  private Product productId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transaction_id")
-    private Transaction transactionId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "transaction_id")
+  private Transaction transactionId;
+
+  @Override
+  public String toString() {
+    return "ProductTransactionId [productId=" + productId + ", transactionId=" + transactionId + "]";
+  }
+
 }

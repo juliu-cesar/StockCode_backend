@@ -28,11 +28,12 @@ public class ProductTransaction {
 
   @Enumerated(EnumType.STRING)
   private CategoriesOfMovements categoriesMovements;
-
+  
   private BigDecimal purchasePrice;
-
+  
   private Integer amount;
-
+  
+  @Enumerated(EnumType.STRING)
   private ReasonOfReturn reasonReturn;
   
   private String description;

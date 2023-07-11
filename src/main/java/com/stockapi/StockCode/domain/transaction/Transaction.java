@@ -35,4 +35,10 @@ public class Transaction {
     this.client = dto.client();
     this.description = dto.description();
   }
+
+  @Override
+  public String toString() {
+    return "Transaction [id=" + id + ", date=" + date + ", client=" + client + ", description=" + description + "]";
+  }
+
 }

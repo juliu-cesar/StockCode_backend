@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record ProductReturnListDto(
     @NotNull Long productId,
-    @NotNull ReasonOfReturn reason,
+    ReasonOfReturn reason,
     String description) {
 }
