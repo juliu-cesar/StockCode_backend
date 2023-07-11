@@ -1,5 +1,7 @@
 package com.stockapi.StockCode.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,20 +15,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.stockapi.StockCode.domain.product.Product;
-import com.stockapi.StockCode.domain.product.ProductRepository;
 import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
 import com.stockapi.StockCode.domain.transaction.DetailProductReturnDTO;
 import com.stockapi.StockCode.domain.transaction.DetailTransactionProductDTO;
 import com.stockapi.StockCode.domain.transaction.ListTransactionDto;
-import com.stockapi.StockCode.domain.transaction.Transaction;
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
-import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProduct;
-import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProductId;
-import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProductRepository;
-import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturn;
-import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnId;
+import com.stockapi.StockCode.domain.transaction.TransactionService;
 import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnRepository;
 import com.stockapi.StockCode.domain.transaction.productReturn.RefoundDto;
 
@@ -37,30 +33,32 @@ import jakarta.validation.Valid;
 public class TransactionController {
 
   @Autowired
+  private TransactionService transactionService;
+
+  @Autowired
   private TransactionRepository repositoryTransaction;
-
-  @Autowired
-  private ProductRepository repositoryProduct;
-
-  @Autowired
-  private BuyProductRepository repositoryBuyProduct;
 
   @Autowired
   private ProductReturnRepository repositoryProductReturn;
 
   @PostMapping
   @Transactional
-  public void createTransaction(@RequestBody @Valid CreateTransactionDto createTransactionDto) {
-    var transaction = new Transaction(createTransactionDto);
-    repositoryTransaction.save(transaction);
+  public ResponseEntity<URI> createTransaction(@RequestBody @Valid CreateTransactionDto createTransactionDto,
+      UriComponentsBuilder uriBuilder) {
+    var transactionId = transactionService.purchaseProduct(createTransactionDto);
+    var uri = uriBuilder.path("/transaction/{id}").buildAndExpand(transactionId).toUri();
 
-    createTransactionDto.productList().forEach(dto -> {
-      var product = repositoryProduct.getReferenceById(dto.id());
-      var buyProduct = new BuyProduct(new BuyProductId(product, transaction), product.getPrice(),
-          dto.amount(), false, dto.description());
+    return ResponseEntity.created(uri).build();
+  }
 
-      repositoryBuyProduct.save(buyProduct);
-    });
+  @PutMapping
+  @Transactional
+  public ResponseEntity<URI> productReturn(@RequestBody @Valid RefoundDto productReturnList,
+      UriComponentsBuilder uriBuilder) {
+    var refoundId = transactionService.refoundProduct(productReturnList);
+    var uri = uriBuilder.path("/transaction/refound/{id}").buildAndExpand(refoundId).toUri();
+
+    return ResponseEntity.created(uri).build();
   }
 
   @GetMapping
@@ -90,24 +88,6 @@ public class TransactionController {
     var dto = repositoryProductReturn.findProductReturnAndDetailIt(pagination, id);
 
     return ResponseEntity.ok(dto);
-  }
-
-  @PutMapping
-  @Transactional
-  public void productReturn(@RequestBody @Valid RefoundDto productReturnList) {
-    Transaction transaction = repositoryTransaction.getReferenceById(productReturnList.transactionId());
-
-    productReturnList.productReturnList().forEach(dto -> {
-      Product product = repositoryProduct.getReferenceById(dto.productId());
-      var ptId = new BuyProductId(product, transaction);
-      var buyProduct = repositoryBuyProduct.findById(ptId);
-      buyProduct.productReturnUpdate(dto);
-
-      var productReturn = new ProductReturn(new ProductReturnId(product, transaction), buyProduct.getPurchasePrice(),
-          dto.amountRefunded(), dto.reason(), dto.description());
-      repositoryProductReturn.save(productReturn);
-    });
-
   }
 
 }
