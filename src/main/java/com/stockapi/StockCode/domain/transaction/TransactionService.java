@@ -1,5 +1,7 @@
 package com.stockapi.StockCode.domain.transaction;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturn;
 import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnId;
 import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnRepository;
 import com.stockapi.StockCode.domain.transaction.productReturn.RefoundDto;
+import com.stockapi.StockCode.domain.transaction.validation.ValidateBuyProduct;
 
 @Service
 public class TransactionService {
@@ -28,13 +31,18 @@ public class TransactionService {
   @Autowired
   private ProductReturnRepository repositoryProductReturn;
 
+  @Autowired
+  private List<ValidateBuyProduct> validateBuyProduct;
+
   public Long purchaseProduct(CreateTransactionDto createTransactionDto) {
-    
+
+    validateBuyProduct.forEach(v -> v.validate(createTransactionDto));
+
     Transaction transaction = new Transaction(createTransactionDto);
     repositoryTransaction.save(transaction);
 
     createTransactionDto.productList().forEach(dto -> {
-      var product = repositoryProduct.getReferenceById(dto.id());
+      var product = repositoryProduct.getReferenceById(Long.valueOf(dto.id()));
       var buyProduct = new BuyProduct(new BuyProductId(product, transaction), product.getPrice(),
           dto.amount(), false, dto.description());
 

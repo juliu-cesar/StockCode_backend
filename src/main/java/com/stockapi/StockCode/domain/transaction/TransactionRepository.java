@@ -31,14 +31,3 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
   Page<DetailTransactionProductDTO> findTransactionAndDetailIt(Pageable pagination, Long id);
 
 }
-
-  // @Query("""
-  //     select new com.stockapi.StockCode.domain.transaction.DetailTransactionProductDTO(
-  //     p.id, p.productName, b.brandName, bp.purchasePrice, bp.amount, bp.purchasePrice * bp.amount, bp.returned, bp.description)
-  //       from BuyProduct bp
-  //       join bp.id.productId p
-  //       join p.brand b
-  //       join bp.id.transactionId t
-  //       where t.id = :id
-  //       order by p.productName
-  //     """)
