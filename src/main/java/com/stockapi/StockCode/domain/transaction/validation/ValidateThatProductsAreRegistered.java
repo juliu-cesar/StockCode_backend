@@ -12,16 +12,17 @@ import com.stockapi.StockCode.infra.ValidationException;
 
 @Component
 public class ValidateThatProductsAreRegistered implements ValidateBuyProduct {
+
   @Autowired
-  private ProductRepository repositoryProduct;
+  private ProductRepository repository;
 
   @Override
   public void validate(CreateTransactionDto dto) {
     List<String> idError = new ArrayList<>();
     
     dto.productList().forEach(p -> {
-      if (!repositoryProduct.existsById(Long.valueOf(p.id()))) {
-        idError.add(String.valueOf(p.id()));
+      if (!repository.existsById(Long.valueOf(p.id()))) {
+        idError.add(p.id());
       }
     });
 
