@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db-mysql:
+    image: mysql:8.2
+    container_name: db-mysql
+    restart: always
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: non-root-password
+      MYSQL_DATABASE: stock-code
+    ports:
+      - "3306:3306"
