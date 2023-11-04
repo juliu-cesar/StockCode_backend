@@ -7,8 +7,6 @@ import com.stockapi.StockCode.domain.category.Category;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,14 +25,7 @@ import lombok.NoArgsConstructor;
 public class Product {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  private String productName;
-
-  private BigDecimal price;
-
-  private String description;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "brand_id")
@@ -43,6 +34,12 @@ public class Product {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id")
   private Category category;
+  
+  private String productName;
+
+  private BigDecimal price;
+
+  private String description;
 
   @Override
   public String toString() {

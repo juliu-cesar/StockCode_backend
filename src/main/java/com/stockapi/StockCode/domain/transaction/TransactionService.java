@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.stockapi.StockCode.domain.product.Product;
 import com.stockapi.StockCode.domain.product.ProductRepository;
-import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProduct;
-import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProductId;
-import com.stockapi.StockCode.domain.transaction.buyProduct.BuyProductRepository;
 import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturn;
 import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnId;
 import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnRepository;
 import com.stockapi.StockCode.domain.transaction.productReturn.RefoundDto;
+import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItems;
+import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsId;
+import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsRepository;
 import com.stockapi.StockCode.domain.transaction.validation.ValidateBuyProduct;
 
 @Service
@@ -26,7 +26,7 @@ public class TransactionService {
   private ProductRepository repositoryProduct;
 
   @Autowired
-  private BuyProductRepository repositoryBuyProduct;
+  private PurchasedItemsRepository repositoryBuyProduct;
 
   @Autowired
   private ProductReturnRepository repositoryProductReturn;
@@ -43,7 +43,7 @@ public class TransactionService {
 
     createTransactionDto.productList().forEach(dto -> {
       var product = repositoryProduct.getReferenceById(Long.valueOf(dto.id()));
-      var buyProduct = new BuyProduct(new BuyProductId(product, transaction), product.getPrice(),
+      var buyProduct = new PurchasedItems(new PurchasedItemsId(product, transaction), product.getPrice(),
           dto.amount(), false, dto.description());
 
       repositoryBuyProduct.save(buyProduct);
@@ -57,7 +57,7 @@ public class TransactionService {
 
     productReturnList.productReturnList().forEach(dto -> {
       Product product = repositoryProduct.getReferenceById(dto.productId());
-      var ptId = new BuyProductId(product, transaction);
+      var ptId = new PurchasedItemsId(product, transaction);
       var buyProduct = repositoryBuyProduct.findById(ptId);
       buyProduct.productReturnUpdate(dto);
 

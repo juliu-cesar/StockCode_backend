@@ -18,13 +18,19 @@ sudo apt-get install maven
 
 We can run the `mvn -version` to verify our installation.
 
-3. Clone repository
+3. Install Docker
+
+```bash
+
+```
+
+4. Clone repository
 
 ```bash
 git clone https://github.com/juliu-cesar/StockCode_backend.git
 ```
 
-4. Check if `mvnw` and `mvnw.cmd` have permission. If not, run the command:
+5. Check if `mvnw` and `mvnw.cmd` have permission. If not, run the command:
 
 ```bash
 chmod +rwx mvnw

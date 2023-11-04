@@ -10,4 +10,7 @@ public class StockCodeApplication {
 		SpringApplication.run(StockCodeApplication.class, args);
 	}
 
+  public static void fillAllTables(String[] args) {
+    
+  }
 }

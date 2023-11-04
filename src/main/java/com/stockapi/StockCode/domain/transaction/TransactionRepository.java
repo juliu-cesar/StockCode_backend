@@ -9,9 +9,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
   @Query("""
       select new com.stockapi.StockCode.domain.transaction.ListTransactionDto(
-      t.id, t.date, t.client, SUM(b.purchasePrice * b.amount) AS totalPrice, t.description)
-        from BuyProduct b
-        join b.id.transactionId t
+      t.id, t.date, t.client, SUM(pi.purchasePrice * pi.amount) AS totalPrice, t.description)
+        from PurchasedItems pi
+        join pi.id.transactionId t
         group by t.id
         order by t.date
       """)
@@ -19,12 +19,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
   @Query("""
       select new com.stockapi.StockCode.domain.transaction.DetailTransactionProductDTO(
-      p.id, p.productName, b.brandName, bp.purchasePrice, bp.amount, 
-      bp.purchasePrice * bp.amount, bp.returned, bp.description)
-        from BuyProduct bp
-        join bp.id.productId p
+      p.id, p.productName, b.brandName, pi.purchasePrice, pi.amount, 
+      pi.purchasePrice * pi.amount, pi.returned, pi.description)
+        from PurchasedItems pi
+        join pi.id.productId p
         join p.brand b
-        join bp.id.transactionId t
+        join pi.id.transactionId t
         where t.id = :id
         order by p.productName
       """)
