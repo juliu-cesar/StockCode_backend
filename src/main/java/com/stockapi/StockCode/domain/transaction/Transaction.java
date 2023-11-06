@@ -35,7 +35,7 @@ public class Transaction {
 
   @Override
   public String toString() {
-    return "Transaction [id=" + id + ", date=" + date + ", client=" + client + ", description=" + description + "]";
+    return "id=" + id + ", date=" + date + ", client=" + client + ", description=" + description;
   }
 
 }

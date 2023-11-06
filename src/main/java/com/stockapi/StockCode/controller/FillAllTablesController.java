@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ import com.stockapi.StockCode.domain.product.ProductRepository;
 import com.stockapi.StockCode.domain.stock.StockRepository;
 import com.stockapi.StockCode.domain.transaction.Transaction;
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
+import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItems;
+import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsId;
+import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsRepository;
 
 import jakarta.validation.Valid;
 
@@ -52,6 +56,9 @@ public class FillAllTablesController {
   @Autowired
   private StockRepository stockRepository;
 
+  @Autowired
+  private PurchasedItemsRepository purchasedItemsRepository;
+
   private static final String BRAND_CSV = "/table-brand.csv";
   private static final String CATEGORY_CSV = "/table-category.csv";
   private static final String PRODUCT_CSV = "/table-product.csv";
@@ -62,16 +69,17 @@ public class FillAllTablesController {
   @PostMapping
   public void fillAllTables() {
     try {
-      readCsv(getClass().getResourceAsStream(BRAND_CSV),
-          "com.stockapi.StockCode.domain.brand.Brand", brandRepository);
-      readCsv(getClass().getResourceAsStream(CATEGORY_CSV),
-          "com.stockapi.StockCode.domain.category.Category",
-          categoryRepository);
-      readCsv(getClass().getResourceAsStream(PRODUCT_CSV),
-          "com.stockapi.StockCode.domain.product.Product", productRepository);
-      readCsv(getClass().getResourceAsStream(STOCK_CSV),
-          "com.stockapi.StockCode.domain.stock.Stock", stockRepository);
-      createTransactions();
+      // readCsv(getClass().getResourceAsStream(BRAND_CSV),
+      // "com.stockapi.StockCode.domain.brand.Brand", brandRepository);
+      // readCsv(getClass().getResourceAsStream(CATEGORY_CSV),
+      // "com.stockapi.StockCode.domain.category.Category",
+      // categoryRepository);
+      // readCsv(getClass().getResourceAsStream(PRODUCT_CSV),
+      // "com.stockapi.StockCode.domain.product.Product", productRepository);
+      // readCsv(getClass().getResourceAsStream(STOCK_CSV),
+      // "com.stockapi.StockCode.domain.stock.Stock", stockRepository);
+      // createTransactions();
+      createPurchasedItems();
     } catch (Exception e) {
       throw new RuntimeException("Failed to fill tables: ", e);
     }
@@ -156,6 +164,31 @@ public class FillAllTablesController {
   }
 
   private void createPurchasedItems() {
+    List<Transaction> transactions = transactionRepository.findAll();
 
+    transactions.forEach(transaction -> {
+      var numberOfProduct = (int) Math.ceil(Math.random() * 6);
+      List<Product> products = productRepository.selectRandomProducts(numberOfProduct);
+
+      products.forEach(product -> {
+        var pId = new PurchasedItemsId(product, transaction);
+        Integer amount = selectAmount(product.getPrice());
+
+        purchasedItemsRepository.save(new PurchasedItems(pId, product.getPrice(), amount, false, ""));
+      });
+
+    });
+  }
+
+  private Integer selectAmount(BigDecimal price){
+    if (price.compareTo(new BigDecimal("3")) < 0) {
+      return (int) Math.ceil(Math.random() * 100);
+    } else if(price.compareTo(new BigDecimal("30")) < 0){
+      return (int) Math.ceil(Math.random() * 10);
+    } else if(price.compareTo(new BigDecimal("60")) < 0){
+      return (int) Math.ceil(Math.random() * 5);
+    }
+    return (int) Math.ceil(Math.random() * 2);
   }
 }
+

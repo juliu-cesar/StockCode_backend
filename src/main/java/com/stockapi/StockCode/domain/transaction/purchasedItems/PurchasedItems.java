@@ -38,8 +38,7 @@ public class PurchasedItems {
 
   @Override
   public String toString() {
-    return "ProductTransaction [id= " + id + ", purchasePrice= "
-        + purchasePrice + ", amount= " + amount + ", totalPrice= " + purchasePrice.multiply(BigDecimal.valueOf(amount))
-        + "]";
+    return "id= " + id + ", purchase-price= "
+        + purchasePrice + ", amount= " + amount + ", total-price= " + purchasePrice.multiply(BigDecimal.valueOf(amount));
   }
 }

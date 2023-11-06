@@ -21,4 +21,9 @@ public class Category {
 
   private String categoryName;
 
+  @Override
+  public String toString() {
+    return "Id: "+id+", category-name: "+categoryName;
+  }
+
 }

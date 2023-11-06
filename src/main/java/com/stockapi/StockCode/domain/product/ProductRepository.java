@@ -1,6 +1,7 @@
 package com.stockapi.StockCode.domain.product;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,5 +17,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
        where p.brand.id = :brandId
        """)
   Page<Product> findAllByBrand(Pageable pagination, Long brandId);
+
+  @Query("""
+      select p from Product p
+       order by rand()
+       limit :numberOfProduct
+       """)
+  List<Product> selectRandomProducts(Integer numberOfProduct);
 
 }
