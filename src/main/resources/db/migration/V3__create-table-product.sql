@@ -1,8 +1,8 @@
 create table product(
     id bigint not null auto_increment,
-    product_name varchar(50) not null,
+    product_name varchar(255) not null,
     price decimal(10,2) not null,
-    description varchar(50),
+    description varchar(255),
     brand_id bigint not null,
     category_id bigint not null,
 

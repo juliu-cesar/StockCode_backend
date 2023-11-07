@@ -4,7 +4,7 @@ create table product_return(
   price_refunded decimal(10,2) not null,
   amount_refunded integer not null,
   reason_return varchar(50) not null,
-  description varchar(100),
+  description varchar(255),
 
   primary key(product_id, transaction_id),
   constraint fk_refound_product_id foreign key(product_id) references product(id),
