@@ -21,9 +21,14 @@ public class Category {
 
   private String categoryName;
 
+  public Category(CreateCategoryDto dto) {
+    this.id = Long.valueOf(dto.id());
+    this.categoryName = dto.categoryName();
+  }
+
   @Override
   public String toString() {
-    return "Id: "+id+", category-name: "+categoryName;
+    return "Id: " + id + ", category-name: " + categoryName;
   }
 
 }
