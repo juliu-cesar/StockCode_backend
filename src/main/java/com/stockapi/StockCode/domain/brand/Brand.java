@@ -20,8 +20,14 @@ public class Brand {
 
   private String brandName;
 
+  public Brand(CreateBrandDto dto) {
+    this.id = Long.valueOf(dto.id());
+    this.brandName = dto.brandName();
+  }
+
   @Override
   public String toString() {
-    return "Id: "+this.id+", brand-name: "+this.brandName;
+    return "Id: " + this.id + ", brand-name: " + this.brandName;
   }
+
 }
