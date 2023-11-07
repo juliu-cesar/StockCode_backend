@@ -1,7 +1,5 @@
 package com.stockapi.StockCode.controller;
 
-import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,13 +38,16 @@ public class StockController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<URI> addProductToStock(@RequestBody @Valid AddProductToStockDto dto,
+  public ResponseEntity<?> addProductToStock(@RequestBody @Valid AddProductToStockDto dto,
       UriComponentsBuilder uriBuilder) {
+    if (repositoryStock.findByProductId(Long.valueOf(dto.productId())).isPresent()){
+      return ResponseEntity.badRequest().body("Produto já cadastrado no estoque");
+    }
     var product = repositoryProduct.getReferenceById(Long.valueOf(dto.productId()));
     Stock stock = new Stock(dto, product);
     repositoryStock.save(stock);
 
-    var uri = uriBuilder.path("/stock/{id}").buildAndExpand(stock.getId()).toUri();
+    var uri = uriBuilder.path("/stock/{id}").buildAndExpand(product.getId()).toUri();
 
     return ResponseEntity.created(uri).build();
   }
@@ -59,19 +60,14 @@ public class StockController {
 
   @GetMapping("/{id}")
   public ResponseEntity<DetailStockDto> searchById(@PathVariable Long id) {
-    var stock = repositoryStock.findById(id).map(DetailStockDto::new);
+    var stock = repositoryStock.findByProductId(id).map(DetailStockDto::new);
     return ResponseEntity.of(stock);
-
-    // return Optional
-    // .ofNullable(repositoryStock.findById(id))
-    // .map(entity -> ResponseEntity.ok().body(entity))
-    // .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @PutMapping
   @Transactional
   public ResponseEntity<String> updateStock(@RequestBody @Valid UpdateStockDto dto) {
-    var stock = repositoryStock.findById(dto.id()).get();
+    var stock = repositoryStock.findByProductId(dto.id()).get();
     stock.Update(dto);
     return ResponseEntity.ok("Estoque do produto atualizado com sucesso.");
   }

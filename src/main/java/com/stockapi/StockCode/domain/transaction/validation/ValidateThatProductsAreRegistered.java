@@ -11,7 +11,7 @@ import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
 import com.stockapi.StockCode.infra.ValidationException;
 
 @Component
-public class ValidateThatProductsAreRegistered implements ValidateBuyProduct {
+public class ValidateThatProductsAreRegistered implements ValidatePurchasedItems {
 
   @Autowired
   private ProductRepository repository;

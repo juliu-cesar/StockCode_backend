@@ -1,9 +1,10 @@
 package com.stockapi.StockCode.domain.category;
 
 public record ListCategoriesDto(
+    Long id,
     String name) {
 
   public ListCategoriesDto(Category category) {
-    this(category.getCategoryName());
+    this(category.getId(), category.getCategoryName());
   }
 }

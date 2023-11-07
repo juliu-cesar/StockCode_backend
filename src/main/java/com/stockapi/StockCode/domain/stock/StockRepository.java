@@ -1,5 +1,7 @@
 package com.stockapi.StockCode.domain.stock;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,5 +12,5 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
           join s.product p
           where p.id = :id
       """)
-  Stock findByProductId(Long id);
+  Optional<Stock> findByProductId(Long id);
 }
