@@ -1,0 +1,106 @@
+### -------------------- Brand --------------------
+GET http://localhost:8080/brand
+###
+POST http://localhost:8080/brand
+content-type: application/json
+
+{
+  "id": "94571248",
+  "brandName": "Boxer"
+}
+
+###
+DELETE http://localhost:8080/brand/94571248
+
+### -------------------- Category --------------------
+GET http://localhost:8080/category
+###
+POST http://localhost:8080/category
+content-type: application/json
+
+{
+  "id": "87457312",
+  "categoryName": "acessórios para ferramentas"
+}
+
+###
+DELETE http://localhost:8080/category/87457312
+
+### -------------------- Product --------------------
+GET http://localhost:8080/product?page=0
+###
+GET http://localhost:8080/product/range?page=0
+content-type: application/json
+
+{
+  "lowestPrice": 100,
+  "biggestPrice": 400
+}
+###
+GET http://localhost:8080/product/brand?page=0
+content-type: application/json
+
+{
+  "brandId": 32174673
+}
+
+###
+GET http://localhost:8080/product/384176598
+
+###
+POST http://localhost:8080/product
+content-type: application/json
+
+{
+  "id": 384176598,
+  "productName": "Jogo X-Line para Furar e Parafusar com 33 Peças e Maleta",
+  "price": 129.17,
+  "description": "",
+  "brandId": 32174673,
+  "categoryId": 87457312
+}
+
+###
+PUT http://localhost:8080/product
+content-type: application/json
+
+{
+	"id": "392157643",
+	"productName": "Alicate Stanley"
+}
+
+# {
+# 	"id": 392157643,
+# 	"productName": "Alicate Stanley",
+# 	"price": 14.46,
+# 	"description": "",
+# 	"brandId": 15678435,
+# 	"categoryId": 14045754
+# }
+
+
+### -------------------- Stock --------------------
+GET http://localhost:8080/stock?page=0
+###
+GET http://localhost:8080/stock/384176598
+###
+POST http://localhost:8080/stock
+content-type: application/json
+
+{
+	"productId": 384176598,
+	"amount": 20,
+	"location": "70B12A"
+}
+###
+DELETE http://localhost:8080/stock/234
+
+### -------------------- Transaction --------------------
+GET http://localhost:8080/transaction?page=0
+
+
+
+### -------------------- FILL ALL TABLES --------------------
+post http://localhost:8080/fill-all-tables
+### -------------------- REMOVE ALL TABLES DATA --------------------
+DELETE http://localhost:8080/fill-all-tables
