@@ -9,4 +9,4 @@ create table product(
     primary key(id),
     constraint fk_product_brand_id foreign key(brand_id) references brand(id),
     constraint fk_product_category_id foreign key(category_id) references category(id)
-);
+)auto_increment = 10000;
