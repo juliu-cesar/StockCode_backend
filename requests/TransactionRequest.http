@@ -1,0 +1,37 @@
+### -------------------- List --------------------
+GET http://localhost:8080/transaction?page=5
+
+### -------------------- List by ID --------------------
+GET http://localhost:8080/transaction/100219
+
+### -------------------- Create --------------------
+POST http://localhost:8080/transaction
+Content-Type: application/json
+
+{
+  "date": "08/11/2023 15:50",
+  "client": "Marcos",
+  "description": "",
+  "productList": [
+    {
+      "id": 10077,
+      "amount": 30,
+      "description": ""
+    },
+    {
+      "id": 10040,
+      "amount": 2,
+      "description": ""
+    },
+    {
+      "id": 10076,
+      "amount": 15,
+      "description": ""
+    },
+    {
+      "id": 10105,
+      "amount": 50,
+      "description": ""
+    }
+  ]
+}

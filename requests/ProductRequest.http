@@ -1,0 +1,59 @@
+### -------------------- List --------------------
+GET http://localhost:8080/product?page=10
+
+### -------------------- List by range --------------------
+GET http://localhost:8080/product/range?page=0
+content-type: application/json
+
+{
+  "lowestPrice": 100,
+  "biggestPrice": 400
+}
+
+### -------------------- List by brand --------------------
+GET http://localhost:8080/product/brand?page=0
+content-type: application/json
+
+{
+  "brandId": 1000
+}
+
+### -------------------- Search by ID --------------------
+GET http://localhost:8080/product/10116
+
+### -------------------- Create --------------------
+POST http://localhost:8080/product
+content-type: application/json
+
+{
+  "productName": "Jogo X-Line para Furar e Parafusar com 33 Peças e Maleta",
+  "price": 129.17,
+  "description": "",
+  "brandId": 1000,
+  "categoryId": 105
+}
+
+### -------------------- Update --------------------
+PUT http://localhost:8080/product
+content-type: application/json
+
+{
+	"id": "10039",
+	"productName": "Retificadeira 480w Makita teste up",
+	"brandId": 1002
+}
+
+# {
+# 	"id": "10039",
+# 	"productName": "Retificadeira 480w Makita",
+# 	"price": 479.74,
+# 	"description": "",
+# 	"brandId": 1002,
+# 	"categoryId": 101
+# }
+### -------------------- Search by ID --------------------
+GET http://localhost:8080/product/10039
+
+
+### -------------------- Delete by ID --------------------
+DELETE http://localhost:8080/product/10115

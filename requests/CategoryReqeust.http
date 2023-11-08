@@ -1,0 +1,13 @@
+### -------------------- List --------------------
+GET http://localhost:8080/category
+
+### -------------------- Create --------------------
+POST http://localhost:8080/category
+content-type: application/json
+
+{
+  "categoryName": "acessórios para ferramentas"
+}
+
+### -------------------- Delete --------------------
+DELETE http://localhost:8080/category/104

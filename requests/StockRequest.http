@@ -1,0 +1,18 @@
+### -------------------- List --------------------
+GET http://localhost:8080/stock?page=0
+
+### -------------------- Search by productID --------------------
+GET http://localhost:8080/stock/10116
+
+### -------------------- Create --------------------
+POST http://localhost:8080/stock
+content-type: application/json
+
+{
+	"productId": 10116,
+	"amount": 20,
+	"location": "70B12A"
+}
+
+### -------------------- Delete by id --------------------
+DELETE http://localhost:8080/stock/10117

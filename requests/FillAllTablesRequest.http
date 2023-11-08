@@ -1,0 +1,5 @@
+### -------------------- FILL ALL TABLES --------------------
+POST http://localhost:8080/fill-all-tables
+
+### -------------------- REMOVE ALL TABLES DATA --------------------
+DELETE http://localhost:8080/fill-all-tables
