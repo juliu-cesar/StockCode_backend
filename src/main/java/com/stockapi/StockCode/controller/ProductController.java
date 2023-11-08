@@ -54,9 +54,6 @@ public class ProductController {
   @Transactional
   public ResponseEntity<?> createProduct(@RequestBody @Valid CreateProductDto dto,
       UriComponentsBuilder uriBuilder) {
-    if (productRepository.findById(Long.valueOf(dto.id())).isPresent()) {
-      return ResponseEntity.badRequest().body("Produto já cadastrado.");
-    }
     var brand = brandRepository.getReferenceById(Long.valueOf(dto.brandId()));
     var category = categoryRepository.getReferenceById(Long.valueOf(dto.categoryId()));
     var product = new Product(dto, brand, category);
@@ -95,7 +92,10 @@ public class ProductController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ListProductsDto> searchById(@PathVariable Long id) {
+  public ResponseEntity<?> searchById(@PathVariable Long id) {
+    if (!productRepository.existsById(id)) {
+      return ResponseEntity.badRequest().body("Não foi possivel encontrar o produto. Verifique se o produto existe ou se o id esta correto.");
+    }
     var product = productRepository.findById(id).get();
     return ResponseEntity.ok(new ListProductsDto(product));
   }

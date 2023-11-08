@@ -31,9 +31,6 @@ public class CategoryController {
   @PostMapping
   @Transactional
   public ResponseEntity<?> createCategory(@RequestBody @Valid CreateCategoryDto dto, UriComponentsBuilder uriBuilder) {
-    if (repository.findById(Long.valueOf(dto.id())).isPresent()) {
-      return ResponseEntity.badRequest().body("Categoria já cadastrada.");
-    }
     var category = new Category(dto);
     repository.save(category);
 

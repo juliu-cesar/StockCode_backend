@@ -30,9 +30,6 @@ public class BrandController {
 
   @PostMapping
   public ResponseEntity<?> createBrand(@RequestBody @Valid CreateBrandDto dto, UriComponentsBuilder uriBuilder) {
-    if (repository.findById(Long.valueOf(dto.id())).isPresent()) {
-      return ResponseEntity.badRequest().body("Marca já cadastrada.");
-    }
     var brand = new Brand(dto);
     repository.save(brand);
 

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import jakarta.validation.constraints.Pattern;
 
 public record UpdateProductDto(
-    @Pattern(regexp = "\\d{9}", message = "Identificador do produto deve conter 9 dígitos.") String id,
+    @Pattern(regexp = "\\d{5}", message = "Identificador do produto deve conter 5 dígitos.") String id,
     String productName,
     BigDecimal price,
     String description,

@@ -46,7 +46,6 @@ public class Product {
   private String description;
 
   public Product(CreateProductDto dto, Brand b, Category c) {
-    this.id = Long.valueOf(dto.id());
     this.brand = b;
     this.category = c;
     this.productName = dto.productName();

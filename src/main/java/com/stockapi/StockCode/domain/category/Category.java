@@ -25,7 +25,6 @@ public class Category {
   private String categoryName;
 
   public Category(CreateCategoryDto dto) {
-    this.id = Long.valueOf(dto.id());
     this.categoryName = dto.categoryName();
   }
 

@@ -11,5 +11,5 @@ create table purchased_items(
   description varchar(255),
 
   primary key(id),
-  constraint fk_transaction_id_purchased foreign key(transaction_id) references transaction(id)
+  constraint fk_purchased_items_transaction foreign key(transaction_id) references transaction(id)
 )auto_increment = 1000000;

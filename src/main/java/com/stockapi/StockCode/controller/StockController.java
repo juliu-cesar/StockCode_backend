@@ -41,7 +41,7 @@ public class StockController {
   public ResponseEntity<?> addProductToStock(@RequestBody @Valid AddProductToStockDto dto,
       UriComponentsBuilder uriBuilder) {
     if (repositoryStock.findByProductId(Long.valueOf(dto.productId())).isPresent()){
-      return ResponseEntity.badRequest().body("Produto já cadastrado no estoque");
+      return ResponseEntity.badRequest().body("Produto já cadastrado no estoque.");
     }
     var product = repositoryProduct.getReferenceById(Long.valueOf(dto.productId()));
     Stock stock = new Stock(dto, product);

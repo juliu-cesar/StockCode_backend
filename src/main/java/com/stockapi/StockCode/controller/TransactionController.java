@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
-import com.stockapi.StockCode.domain.transaction.DetailProductReturnDTO;
+import com.stockapi.StockCode.domain.transaction.DetailRefoundProductDTO;
 import com.stockapi.StockCode.domain.transaction.DetailTransactionProductDTO;
 import com.stockapi.StockCode.domain.transaction.ListTransactionDto;
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
 import com.stockapi.StockCode.domain.transaction.TransactionService;
-import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnRepository;
+import com.stockapi.StockCode.domain.transaction.productReturn.RefoundProductRepository;
 import com.stockapi.StockCode.domain.transaction.productReturn.RefoundDto;
 
 import jakarta.validation.Valid;
@@ -36,10 +36,10 @@ public class TransactionController {
   private TransactionService transactionService;
 
   @Autowired
-  private TransactionRepository repositoryTransaction;
+  private TransactionRepository transactionRepository;
 
   @Autowired
-  private ProductReturnRepository repositoryProductReturn;
+  private RefoundProductRepository refoundProductRepository;
 
   @PostMapping
   @Transactional
@@ -63,9 +63,9 @@ public class TransactionController {
 
   @GetMapping
   public ResponseEntity<Page<ListTransactionDto>> listAllTransactions(
-      @PageableDefault(size = 10) Pageable pagination) {
+      @PageableDefault(size = 20) Pageable pagination) {
 
-    var dto = repositoryTransaction.findAllWithPrice(pagination);
+    var dto = transactionRepository.findAllWithPrice(pagination);
 
     return ResponseEntity.ok(dto);
   }
@@ -75,17 +75,17 @@ public class TransactionController {
       @PageableDefault(size = 10) Pageable pagination,
       @PathVariable Long id) {
 
-    var dto = repositoryTransaction.findTransactionAndDetailIt(pagination, id);
+    var dto = transactionRepository.findTransactionAndDetailIt(pagination, id);
 
     return ResponseEntity.ok(dto);
   }
 
   @GetMapping("/refound/{id}")
-  public ResponseEntity<Page<DetailProductReturnDTO>> detailProductReturn(
+  public ResponseEntity<Page<DetailRefoundProductDTO>> detailProductReturn(
       @PageableDefault(size = 10) Pageable pagination,
       @PathVariable Long id) {
 
-    var dto = repositoryProductReturn.findProductReturnAndDetailIt(pagination, id);
+    var dto = refoundProductRepository.findRefoundProductByTransactionId(pagination, id);
 
     return ResponseEntity.ok(dto);
   }

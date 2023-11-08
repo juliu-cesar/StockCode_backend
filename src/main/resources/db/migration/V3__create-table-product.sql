@@ -7,6 +7,6 @@ create table product(
     category_id bigint not null,
 
     primary key(id),
-    constraint fk_product_brand_id foreign key(brand_id) references brand(id),
-    constraint fk_product_category_id foreign key(category_id) references category(id)
+    constraint fk_product_brand foreign key(brand_id) references brand(id),
+    constraint fk_product_category foreign key(category_id) references category(id)
 )auto_increment = 10000;

@@ -25,7 +25,6 @@ public class Brand {
   private String brandName;
 
   public Brand(CreateBrandDto dto) {
-    this.id = Long.valueOf(dto.id());
     this.brandName = dto.brandName();
   }
 
