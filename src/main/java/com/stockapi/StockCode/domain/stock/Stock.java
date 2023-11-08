@@ -35,10 +35,16 @@ public class Stock {
 
   private String location;
 
-  public Stock(AddProductToStockDto dto, Product product) {
-    this.product = product;
+  public Stock(AddProductToStockDto dto, Product p) {
+    this.product = p;
     this.amount = dto.amount();
     this.location = dto.location();
+  }
+
+  public Stock(Product p, Integer a, String l) {
+    this.product = p;
+    this.amount = a;
+    this.location = l;
   }
 
   public void Update(UpdateStockDto dto){

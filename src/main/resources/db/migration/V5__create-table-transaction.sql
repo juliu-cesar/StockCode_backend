@@ -4,4 +4,4 @@ create table transaction(
   client varchar(255),
   description varchar(255),
   primary key(id)
-);
+)auto_increment = 100000;

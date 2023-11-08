@@ -3,6 +3,8 @@ package com.stockapi.StockCode.domain.transaction;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 public class Transaction {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private LocalDateTime date;
@@ -32,10 +35,17 @@ public class Transaction {
     this.client = dto.client();
     this.description = dto.description();
   }
+  
+  public Transaction(LocalDateTime dateTime, String clientName, String des) {
+    this.date = dateTime;
+    this.client = clientName;
+    this.description = des;
+  }
 
   @Override
   public String toString() {
     return "id=" + id + ", date=" + date + ", client=" + client + ", description=" + description;
   }
+
 
 }
