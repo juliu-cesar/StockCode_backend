@@ -4,8 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PurchasedItemsRepository extends JpaRepository<PurchasedItems, Long> {
 
-  PurchasedItems findById(PurchasedItemsId productTransactionId);
-
   // TOTAL VALUE SOLD PER BRAND
   // select sum(subquery.total_price) as total_sum 
     // from (select SUM(purchase_price * amount) as total_price 
