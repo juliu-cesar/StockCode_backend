@@ -9,27 +9,27 @@ POST http://localhost:8080/transaction
 Content-Type: application/json
 
 {
-  "date": "08/11/2023 15:50",
+  "date": "09/11/2023 09:15",
   "client": "Marcos",
   "description": "",
   "productList": [
     {
-      "id": 10077,
-      "amount": 30,
-      "description": ""
-    },
-    {
-      "id": 10040,
+      "id": 10037,
       "amount": 2,
       "description": ""
     },
     {
-      "id": 10076,
-      "amount": 15,
+      "id": 10012,
+      "amount": 2,
       "description": ""
     },
     {
-      "id": 10105,
+      "id": 10001,
+      "amount": 2,
+      "description": ""
+    },
+    {
+      "id": 10101,
       "amount": 50,
       "description": ""
     }

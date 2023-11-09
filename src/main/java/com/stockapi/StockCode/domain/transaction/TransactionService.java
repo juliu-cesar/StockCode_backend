@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.stockapi.StockCode.domain.product.Product;
 import com.stockapi.StockCode.domain.product.ProductRepository;
+import com.stockapi.StockCode.domain.stock.Stock;
+import com.stockapi.StockCode.domain.stock.StockRepository;
+import com.stockapi.StockCode.domain.stock.UpdateStockDto;
 import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundDto;
 import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProduct;
 import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProductId;
@@ -20,10 +23,13 @@ import com.stockapi.StockCode.domain.transaction.validation.ValidatePurchasedIte
 public class TransactionService {
 
   @Autowired
-  private TransactionRepository transactionRepository;
+  private ProductRepository productRepository;
 
   @Autowired
-  private ProductRepository productRepository;
+  private StockRepository stockRepository;
+
+  @Autowired
+  private TransactionRepository transactionRepository;
 
   @Autowired
   private PurchasedItemsRepository purchasedItemsRepository;
@@ -43,6 +49,12 @@ public class TransactionService {
 
     createTransactionDto.productList().forEach(item -> {
       Product product = productRepository.getReferenceById(Long.valueOf(item.id()));
+      Stock stock = stockRepository.findByProductId(Long.valueOf(item.id())).get();
+      Integer stockAmount = stock.getAmount() - item.amount();
+      var updateStockDto = new UpdateStockDto(Long.valueOf(item.id()), stockAmount, null);
+
+      stock.Update(updateStockDto);
+
       var dto = new CreatePurchasedItemsDto(transaction, product.getId(),
           product.getProductName(), product.getBrand().getBrandName(),
           product.getCategory().getCategoryName(), product.getPrice(),

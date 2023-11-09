@@ -2,7 +2,7 @@
 GET http://localhost:8080/stock?page=0
 
 ### -------------------- Search by productID --------------------
-GET http://localhost:8080/stock/10116
+GET http://localhost:8080/stock/10037
 
 ### -------------------- Create --------------------
 POST http://localhost:8080/stock
