@@ -2,11 +2,12 @@ package com.stockapi.StockCode.domain.transaction;
 
 import java.math.BigDecimal;
 
-import com.stockapi.StockCode.domain.transaction.productReturn.ReasonOfReturn;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.ReasonOfReturn;
 
 import jakarta.persistence.Column;
 
 public record DetailRefoundProductDTO(
+    @Column(name = "id") Long purchasedItemId,
     @Column(name = "productId") Long productId,
     @Column(name = "productName") String product,
     @Column(name = "productBrand") String Brand,

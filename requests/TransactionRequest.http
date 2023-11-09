@@ -37,5 +37,25 @@ Content-Type: application/json
 }
 
 ### -------------------- Refound Product --------------------
-POST http://localhost:8080/transaction
+PUT http://localhost:8080/transaction
 Content-Type: application/json
+
+{
+  "transactionId": 100294,
+  "listRefoundProduct": [
+    {
+      "purchasedItemId": 1001006,
+      "amountRefunded": 2,
+      "reason": "UNHAPPY_COSTUMER",
+      "description": "Cliente relatou que a chave estava torta"
+    },
+    {
+      "purchasedItemId": 1001004,
+      "amountRefunded": 4,
+      "reason": "PRODUCT_DEFECT",
+      "description": "parafusos com rosca defeituosa."
+    }
+  ]
+}
+### -------------------- Detail Refound by transactionID --------------------
+GET http://localhost:8080/transaction/refound/100294

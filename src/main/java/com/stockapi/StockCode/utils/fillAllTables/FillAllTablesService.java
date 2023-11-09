@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
@@ -24,20 +23,17 @@ import com.stockapi.StockCode.domain.category.Category;
 import com.stockapi.StockCode.domain.category.CategoryRepository;
 import com.stockapi.StockCode.domain.product.Product;
 import com.stockapi.StockCode.domain.product.ProductRepository;
-import com.stockapi.StockCode.domain.stock.AddProductToStockDto;
 import com.stockapi.StockCode.domain.stock.Stock;
 import com.stockapi.StockCode.domain.stock.StockRepository;
-import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
 import com.stockapi.StockCode.domain.transaction.Transaction;
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProductRepository;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.CreatePurchasedItemsDto;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItems;
-import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsId;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 
 @Service
 public class FillAllTablesService {
@@ -59,6 +55,9 @@ public class FillAllTablesService {
 
   @Autowired
   private PurchasedItemsRepository purchasedItemsRepository;
+
+  @Autowired
+  private RefoundProductRepository refoundProductRepository;
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -94,6 +93,7 @@ public class FillAllTablesService {
 
   public String emptyAllTheTables() {
 
+    refoundProductRepository.deleteAll();
     purchasedItemsRepository.deleteAll();
     transactionRepository.deleteAll();
     stockRepository.deleteAll();

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import jakarta.persistence.Column;
 
 public record DetailTransactionProductDTO(
-    @Column(name = "id") Long id,
+    @Column(name = "id") Long purchasedItemsId,
     @Column(name = "productId") Long productId,
     @Column(name = "productName") String productName,
     @Column(name = "productBrand") String brand,

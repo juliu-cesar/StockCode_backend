@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.stockapi.StockCode.domain.product.Product;
 import com.stockapi.StockCode.domain.product.ProductRepository;
-import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturn;
-import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnId;
-import com.stockapi.StockCode.domain.transaction.productReturn.ProductReturnRepository;
-import com.stockapi.StockCode.domain.transaction.productReturn.RefoundDto;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundDto;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProduct;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProductId;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProductRepository;
+import com.stockapi.StockCode.domain.transaction.purchasedItems.CreatePurchasedItemsDto;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItems;
-import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsId;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsRepository;
 import com.stockapi.StockCode.domain.transaction.validation.ValidatePurchasedItems;
 
@@ -20,16 +20,16 @@ import com.stockapi.StockCode.domain.transaction.validation.ValidatePurchasedIte
 public class TransactionService {
 
   @Autowired
-  private TransactionRepository repositoryTransaction;
+  private TransactionRepository transactionRepository;
 
   @Autowired
-  private ProductRepository repositoryProduct;
+  private ProductRepository productRepository;
 
   @Autowired
   private PurchasedItemsRepository purchasedItemsRepository;
 
   @Autowired
-  private ProductReturnRepository repositoryProductReturn;
+  private RefoundProductRepository refoundProductRepository;
 
   @Autowired
   private List<ValidatePurchasedItems> validatePurchasedItems;
@@ -39,31 +39,33 @@ public class TransactionService {
     validatePurchasedItems.forEach(v -> v.validate(createTransactionDto));
 
     Transaction transaction = new Transaction(createTransactionDto);
-    repositoryTransaction.save(transaction);
+    transactionRepository.save(transaction);
 
-    createTransactionDto.productList().forEach(dto -> {
-      var product = repositoryProduct.getReferenceById(Long.valueOf(dto.id()));
-      var purchasedItem = new PurchasedItems(new PurchasedItemsId(product, transaction), product.getPrice(),
-          dto.amount(), false, dto.description());
-
-      purchasedItemsRepository.save(purchasedItem);
+    createTransactionDto.productList().forEach(item -> {
+      Product product = productRepository.getReferenceById(Long.valueOf(item.id()));
+      var dto = new CreatePurchasedItemsDto(transaction, product.getId(),
+          product.getProductName(), product.getBrand().getBrandName(),
+          product.getCategory().getCategoryName(), product.getPrice(),
+          item.amount(), false, item.description());
+      purchasedItemsRepository.save(new PurchasedItems(dto));
     });
 
     return transaction.getId();
   }
 
-  public Long refoundProduct(RefoundDto productReturnList) {
-    Transaction transaction = repositoryTransaction.getReferenceById(productReturnList.transactionId());
+  public Long refoundProduct(RefoundDto refound) {
+    Transaction transaction = transactionRepository.getReferenceById(refound.transactionId());
 
-    productReturnList.productReturnList().forEach(dto -> {
-      Product product = repositoryProduct.getReferenceById(dto.productId());
-      var ptId = new PurchasedItemsId(product, transaction);
-      var buyProduct = purchasedItemsRepository.findById(ptId);
-      buyProduct.productReturnUpdate(dto);
+    // TODO : apply validation
 
-      var productReturn = new ProductReturn(new ProductReturnId(product, transaction), buyProduct.getPurchasePrice(),
-          dto.amountRefunded(), dto.reason(), dto.description());
-      repositoryProductReturn.save(productReturn);
+    refound.listRefoundProduct().forEach(productReturned -> {
+      PurchasedItems purchasedItem = purchasedItemsRepository.findById(productReturned.purchasedItemId()).get();
+      purchasedItem.refoundProductUpdate(productReturned);
+
+      var productReturn = new RefoundProduct(new RefoundProductId(purchasedItem, transaction),
+          purchasedItem.getPurchasePrice(),
+          productReturned.amountRefunded(), productReturned.reason(), productReturned.description());
+      refoundProductRepository.save(productReturn);
     });
 
     return transaction.getId();

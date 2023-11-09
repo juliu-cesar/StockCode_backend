@@ -23,8 +23,8 @@ import com.stockapi.StockCode.domain.transaction.DetailTransactionProductDTO;
 import com.stockapi.StockCode.domain.transaction.ListTransactionDto;
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
 import com.stockapi.StockCode.domain.transaction.TransactionService;
-import com.stockapi.StockCode.domain.transaction.productReturn.RefoundProductRepository;
-import com.stockapi.StockCode.domain.transaction.productReturn.RefoundDto;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundDto;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProductRepository;
 
 import jakarta.validation.Valid;
 
@@ -81,7 +81,7 @@ public class TransactionController {
   }
 
   @GetMapping("/refound/{id}")
-  public ResponseEntity<Page<DetailRefoundProductDTO>> detailProductReturn(
+  public ResponseEntity<Page<DetailRefoundProductDTO>> detailRefoundProduct(
       @PageableDefault(size = 10) Pageable pagination,
       @PathVariable Long id) {
 

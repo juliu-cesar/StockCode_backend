@@ -3,7 +3,7 @@ package com.stockapi.StockCode.domain.transaction.purchasedItems;
 import java.math.BigDecimal;
 
 import com.stockapi.StockCode.domain.transaction.Transaction;
-import com.stockapi.StockCode.domain.transaction.productReturn.RefoundListDto;
+import com.stockapi.StockCode.domain.transaction.RefoundProduct.ListRefoundProductDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,7 +38,7 @@ public class PurchasedItems {
   private Transaction transaction;
 
   private Long productId;
-  
+
   private String productName;
 
   private String productBrand;
@@ -65,9 +65,13 @@ public class PurchasedItems {
     this.description = dto.description();
   }
 
-  public void productReturnUpdate(RefoundListDto prl) {
+  public void refoundProductUpdate(ListRefoundProductDto prl) {
     this.returned = true;
-    this.description = prl.description();
+    if (this.description.isEmpty()) {
+      this.description = prl.description();
+    } else {
+      this.description += ", " + prl.description();
+    }
   }
 
   @Override
