@@ -20,10 +20,10 @@ public class ValidatePurchaseQuantityIsGreaterThanStockQuantity implements Valid
   public void validate(CreateTransactionDto dto) {
     List<String> amountError = new ArrayList<>();
     
-    dto.productList().forEach(p -> {
-      var product = repository.findByProductId(Long.valueOf(p.id()));
-      if(product.get().getAmount() < p.amount()){
-        amountError.add(p.id());
+    dto.productList().forEach(productDto -> {
+      var product = repository.findByProductId(Long.valueOf(productDto.id())).get();
+      if(productDto.amount() > product.getAmount()){
+        amountError.add(productDto.id());
       }
     });
 
