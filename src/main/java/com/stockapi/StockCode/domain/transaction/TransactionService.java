@@ -1,6 +1,7 @@
 package com.stockapi.StockCode.domain.transaction;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,14 +11,18 @@ import com.stockapi.StockCode.domain.product.ProductRepository;
 import com.stockapi.StockCode.domain.stock.Stock;
 import com.stockapi.StockCode.domain.stock.StockRepository;
 import com.stockapi.StockCode.domain.stock.UpdateStockDto;
-import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundDto;
-import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProduct;
-import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProductId;
-import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProductRepository;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.CreatePurchasedItemsDto;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItems;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsRepository;
-import com.stockapi.StockCode.domain.transaction.validation.ValidatePurchasedItems;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.ListRefoundProductDto;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.ReasonOfReturn;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundDto;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundProduct;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundProductId;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundProductRepository;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.UpdateRefoundDto;
+import com.stockapi.StockCode.domain.transaction.validation.purchasedItems.ValidatePurchasedItems;
+import com.stockapi.StockCode.domain.transaction.validation.refoundProduct.ValidateRefoundProduct;
 
 @Service
 public class TransactionService {
@@ -39,6 +44,9 @@ public class TransactionService {
 
   @Autowired
   private List<ValidatePurchasedItems> validatePurchasedItems;
+
+  @Autowired
+  private List<ValidateRefoundProduct> validateRefoundProduct;
 
   public Long purchaseProduct(CreateTransactionDto createTransactionDto) {
 
@@ -65,21 +73,50 @@ public class TransactionService {
     return transaction.getId();
   }
 
-  public Long refoundProduct(RefoundDto refound) {
-    Transaction transaction = transactionRepository.getReferenceById(refound.transactionId());
+  public Long refoundProduct(RefoundDto refoundDto) {
+    validateRefoundProduct.forEach(v -> v.validate(refoundDto));
 
-    // TODO : apply validation
+    Transaction transaction = transactionRepository.getReferenceById(refoundDto.transactionId());
+    List<RefoundProduct> listRefoundByTransaction = refoundProductRepository
+        .findAllByTransactionId(refoundDto.transactionId());
 
-    refound.listRefoundProduct().forEach(productReturned -> {
-      PurchasedItems purchasedItem = purchasedItemsRepository.findById(productReturned.purchasedItemId()).get();
-      purchasedItem.refoundProductUpdate(productReturned);
+    refoundDto.listRefoundProduct().forEach(refoundItem -> {
+      PurchasedItems purchasedItem = purchasedItemsRepository.findById(refoundItem.purchasedItemId()).get();
 
-      var productReturn = new RefoundProduct(new RefoundProductId(purchasedItem, transaction),
-          purchasedItem.getPurchasePrice(),
-          productReturned.amountRefunded(), productReturned.reason(), productReturned.description());
-      refoundProductRepository.save(productReturn);
+      if (listRefoundByTransaction.isEmpty()) {
+        updatePurchasedAndCreateRefound(purchasedItem, refoundItem, transaction);
+      } else {
+        Optional<RefoundProduct> rp = refoundProductRepository.findByPurchasedId(refoundItem.purchasedItemId());
+        if (rp.isPresent()) {
+          RefoundProduct refoundProduct = rp.get();
+          UpdateRefoundDto updateDto = new UpdateRefoundDto(refoundItem.amountRefunded(), refoundItem.reason(),
+              refoundItem.description());
+
+          refoundProduct.update(updateDto);
+        } else {
+          updatePurchasedAndCreateRefound(purchasedItem, refoundItem, transaction);
+        }
+      }
+
+      if (refoundItem.reason() == ReasonOfReturn.UNHAPPY_COSTUMER && refoundItem.returnedToStock()) {
+        Stock stock = stockRepository.findByProductId(purchasedItem.getProductId()).get();
+        Integer stockAmount = stock.getAmount() + refoundItem.amountRefunded();
+        var updateStockDto = new UpdateStockDto(Long.valueOf(refoundItem.purchasedItemId()), stockAmount, null);
+
+        stock.Update(updateStockDto);
+      }
     });
 
     return transaction.getId();
+  }
+
+  private void updatePurchasedAndCreateRefound(PurchasedItems purchasedItem, ListRefoundProductDto refoundItem,
+      Transaction transaction) {
+    purchasedItem.refoundProductUpdate(refoundItem);
+
+    RefoundProduct refoundProduct = new RefoundProduct(new RefoundProductId(purchasedItem, transaction),
+        purchasedItem.getPurchasePrice(),
+        refoundItem.amountRefunded(), refoundItem.reason(), refoundItem.description());
+    refoundProductRepository.save(refoundProduct);
   }
 }

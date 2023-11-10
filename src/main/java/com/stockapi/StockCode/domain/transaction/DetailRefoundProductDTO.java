@@ -2,7 +2,7 @@ package com.stockapi.StockCode.domain.transaction;
 
 import java.math.BigDecimal;
 
-import com.stockapi.StockCode.domain.transaction.RefoundProduct.ReasonOfReturn;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.ReasonOfReturn;
 
 import jakarta.persistence.Column;
 

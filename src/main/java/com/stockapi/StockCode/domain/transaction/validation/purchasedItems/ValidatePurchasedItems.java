@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.transaction.validation;
+package com.stockapi.StockCode.domain.transaction.validation.purchasedItems;
 
 import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
 

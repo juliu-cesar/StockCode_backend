@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.transaction.RefoundProduct;
+package com.stockapi.StockCode.domain.transaction.refoundProduct;
 
 import java.io.Serializable;
 
@@ -9,6 +9,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class RefoundProductId implements Serializable {
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "purchased_items_id")
   private PurchasedItems purchasedItems;
 

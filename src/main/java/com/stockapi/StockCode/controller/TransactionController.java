@@ -23,8 +23,8 @@ import com.stockapi.StockCode.domain.transaction.DetailTransactionProductDTO;
 import com.stockapi.StockCode.domain.transaction.ListTransactionDto;
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
 import com.stockapi.StockCode.domain.transaction.TransactionService;
-import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundDto;
-import com.stockapi.StockCode.domain.transaction.RefoundProduct.RefoundProductRepository;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundDto;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundProductRepository;
 
 import jakarta.validation.Valid;
 

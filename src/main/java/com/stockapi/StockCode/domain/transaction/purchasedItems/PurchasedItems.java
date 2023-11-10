@@ -3,7 +3,7 @@ package com.stockapi.StockCode.domain.transaction.purchasedItems;
 import java.math.BigDecimal;
 
 import com.stockapi.StockCode.domain.transaction.Transaction;
-import com.stockapi.StockCode.domain.transaction.RefoundProduct.ListRefoundProductDto;
+import com.stockapi.StockCode.domain.transaction.refoundProduct.ListRefoundProductDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

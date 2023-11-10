@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.transaction.RefoundProduct;
+package com.stockapi.StockCode.domain.transaction.refoundProduct;
 
 import java.math.BigDecimal;
 
@@ -32,4 +32,15 @@ public class RefoundProduct {
 
   private String description;
 
+  public void update(UpdateRefoundDto dto) {
+    if (dto.amount() != null) {
+      this.amountRefunded += dto.amount();
+    }
+    if (dto.reason() != null) {
+      this.reasonReturn = dto.reason();
+    }
+    if (dto.description() != null) {
+      this.description = dto.description();
+    }
+  }
 }

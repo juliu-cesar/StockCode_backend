@@ -1,4 +1,4 @@
-package com.stockapi.StockCode.domain.transaction.RefoundProduct;
+package com.stockapi.StockCode.domain.transaction.refoundProduct;
 
 public enum ReasonOfReturn {
   UNHAPPY_COSTUMER,

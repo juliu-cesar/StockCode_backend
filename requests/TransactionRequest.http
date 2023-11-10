@@ -4,7 +4,7 @@ GET http://localhost:8080/transaction?page=5
 ### -------------------- List by ID --------------------
 GET http://localhost:8080/transaction/100219
 
-### -------------------- Create --------------------
+### -------------------- Create 1 --------------------
 POST http://localhost:8080/transaction
 Content-Type: application/json
 
@@ -35,27 +35,38 @@ Content-Type: application/json
     }
   ]
 }
+### -------------------- Create 2 --------------------
+POST http://localhost:8080/transaction
+Content-Type: application/json
+
+{
+  "date": "09/11/2023 11:35",
+  "client": "Lucas",
+  "description": "",
+  "productList": [
+    {
+      "id": 10023,
+      "amount": 0,
+      "description": ""
+    }
+  ]
+}
 
 ### -------------------- Refound Product --------------------
 PUT http://localhost:8080/transaction
 Content-Type: application/json
 
 {
-  "transactionId": 100294,
+  "transactionId": 100143,
   "listRefoundProduct": [
     {
-      "purchasedItemId": 1001006,
-      "amountRefunded": 2,
+      "purchasedItemId": 1000537,
+      "amountRefunded": 0,
       "reason": "UNHAPPY_COSTUMER",
-      "description": "Cliente relatou que a chave estava torta"
-    },
-    {
-      "purchasedItemId": 1001004,
-      "amountRefunded": 4,
-      "reason": "PRODUCT_DEFECT",
-      "description": "parafusos com rosca defeituosa."
+      "returnedToStock": true,
+      "description": "cliente não gostou."
     }
   ]
 }
 ### -------------------- Detail Refound by transactionID --------------------
-GET http://localhost:8080/transaction/refound/100294
+GET http://localhost:8080/transaction/refound/100143
