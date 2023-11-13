@@ -1,8 +1,8 @@
 ### -------------------- List --------------------
-GET http://localhost:8080/transaction?page=5
+GET http://localhost:8080/transaction?page=6
 
 ### -------------------- List by ID --------------------
-GET http://localhost:8080/transaction/100219
+GET http://localhost:8080/transaction/100123
 
 ### -------------------- Create 1 --------------------
 POST http://localhost:8080/transaction
@@ -65,6 +65,36 @@ Content-Type: application/json
       "reason": "UNHAPPY_COSTUMER",
       "returnedToStock": true,
       "description": "cliente não gostou."
+    }
+  ]
+}
+### -------------------- Refound Product 2 --------------------
+PUT http://localhost:8080/transaction
+Content-Type: application/json
+
+{
+  "transactionId": 100123,
+  "listRefoundProduct": [
+    {
+      "purchasedItemId": 1000460,
+      "amountRefunded": 1,
+      "reason": "UNHAPPY_COSTUMER",
+      "returnedToStock": true,
+      "description": "cliente não precisou de dois marteletes."
+    },
+    {
+      "purchasedItemId": 1000462,
+      "amountRefunded": 1,
+      "reason": "PRODUCT_DEFECT",
+      "returnedToStock": false,
+      "description": "chave trava mesmo apos parar de fazer foça."
+    },
+    {
+      "purchasedItemId": 1000461,
+      "amountRefunded": 6,
+      "reason": "PRODUCT_DEFECT",
+      "returnedToStock": true,
+      "description": "Parafusos com defeito na rosca."
     }
   ]
 }

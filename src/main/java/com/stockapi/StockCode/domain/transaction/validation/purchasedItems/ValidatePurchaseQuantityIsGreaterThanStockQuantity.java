@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.stockapi.StockCode.domain.stock.StockRepository;
 import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
-import com.stockapi.StockCode.infra.ValidationException;
+import com.stockapi.StockCode.infra.exception.ValidationException;
 
 @Component
 public class ValidatePurchaseQuantityIsGreaterThanStockQuantity implements ValidatePurchasedItems  {

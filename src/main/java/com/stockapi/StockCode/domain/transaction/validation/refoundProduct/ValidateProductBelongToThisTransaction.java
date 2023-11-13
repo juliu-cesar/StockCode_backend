@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsRepository;
 import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundDto;
-import com.stockapi.StockCode.infra.ValidationException;
+import com.stockapi.StockCode.infra.exception.ValidationException;
 
 @Component
 public class ValidateProductBelongToThisTransaction implements ValidateRefoundProduct {
@@ -22,7 +22,7 @@ public class ValidateProductBelongToThisTransaction implements ValidateRefoundPr
 
     dto.listRefoundProduct().forEach(refoundItem -> {
       var pi = purchasedItemsRepository.findById(refoundItem.purchasedItemId()).get();
-      if (dto.transactionId() != pi.getTransaction().getId()) {
+      if (dto.transactionId().compareTo(pi.getTransaction().getId()) != 0) {
         transactionError.add(pi.getId());
       }
     });
@@ -30,5 +30,5 @@ public class ValidateProductBelongToThisTransaction implements ValidateRefoundPr
       throw new ValidationException("Não é possivel retornar items de outra transação.");
     }
   }
-  
+
 }

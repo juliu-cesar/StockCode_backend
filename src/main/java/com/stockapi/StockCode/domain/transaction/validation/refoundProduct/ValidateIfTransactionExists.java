@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.stockapi.StockCode.domain.transaction.TransactionRepository;
 import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundDto;
-import com.stockapi.StockCode.infra.ValidationException;
+import com.stockapi.StockCode.infra.exception.ValidationException;
 
 @Component
 public class ValidateIfTransactionExists implements ValidateRefoundProduct{

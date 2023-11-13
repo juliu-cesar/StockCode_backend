@@ -9,8 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.stockapi.StockCode.infra.ValidationException;
-
 @RestControllerAdvice
 public class HandlingExceptions {
 
@@ -24,6 +22,11 @@ public class HandlingExceptions {
   public ResponseEntity<String> handleValidationException(ValidationException ex) {
     // ex.printStackTrace();
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(EntityNotFoundException.class)
+  public ResponseEntity<String> handleEntityNotFoundException(ValidationException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
 
   private record ValidationErrorDto(String field, String message) {

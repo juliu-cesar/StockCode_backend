@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.stockapi.StockCode.domain.stock.StockRepository;
 import com.stockapi.StockCode.domain.transaction.purchasedItems.PurchasedItemsRepository;
 import com.stockapi.StockCode.domain.transaction.refoundProduct.RefoundDto;
-import com.stockapi.StockCode.infra.ValidationException;
+import com.stockapi.StockCode.infra.exception.ValidationException;
 
 @Component
 public class ValidateProductIsRegisteredInStock implements ValidateRefoundProduct {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.stockapi.StockCode.domain.product.ProductRepository;
 import com.stockapi.StockCode.domain.transaction.CreateTransactionDto;
-import com.stockapi.StockCode.infra.ValidationException;
+import com.stockapi.StockCode.infra.exception.ValidationException;
 
 @Component
 public class ValidateIfProductsAreRegistered implements ValidatePurchasedItems {
