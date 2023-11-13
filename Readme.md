@@ -18,11 +18,7 @@ sudo apt-get install maven
 
 We can run the `mvn -version` to verify our installation.
 
-3. Install Docker
-
-```bash
-
-```
+3. Install Docker. Follow this installation guide [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/#installation-methods)
 
 4. Clone repository
 
@@ -48,8 +44,10 @@ docker compose up -d
 
 2. Use your IDE to start the project.
 
-3. Fill tables with **mock information**. Make a POST request to the following route:
+3. Fill tables with **mock information**. Make a *POST* request to the following route:
 
 ```http
 http://localhost:8080/fill-all-tables
 ```
+
+4. Use [Insomnia](https://insomnia.rest/download), [Postman](https://www.postman.com/downloads/), or the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) to make requests. If you choose the **REST Client** extension, the requests are already in the [requests](/requests/) folder.
