@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class HandlingExceptions {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<List<HandlingExceptions.ValidationErrorDto>> trataErro400(MethodArgumentNotValidException ex) {
+  public ResponseEntity<List<HandlingExceptions.ValidationErrorDto>> handleArgumentNotValid(MethodArgumentNotValidException ex) {
     var erros = ex.getFieldErrors();
     return ResponseEntity.badRequest().body(erros.stream().map(ValidationErrorDto::new).toList());
   }
@@ -25,7 +25,7 @@ public class HandlingExceptions {
   }
 
   @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity<String> handleEntityNotFoundException(ValidationException ex) {
+  public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
 

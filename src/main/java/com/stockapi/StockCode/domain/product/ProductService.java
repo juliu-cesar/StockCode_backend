@@ -35,8 +35,14 @@ public class ProductService {
   private List<ValidateProductUpdate> validateProductUpdate;
 
   public Long create(CreateProductDto dto) {
-    var brand = brandRepository.getReferenceById(Long.valueOf(dto.brandId()));
-    var category = categoryRepository.getReferenceById(Long.valueOf(dto.categoryId()));
+    if (!brandRepository.existsById(Long.valueOf(dto.brandId()))) {
+      throw new EntityNotFoundException("Marca não encontrada.");
+    }
+    if (!categoryRepository.existsById(Long.valueOf(dto.categoryId()))) {
+      throw new EntityNotFoundException("Categoria não encontrada.");
+    }
+    Brand brand = brandRepository.getReferenceById(Long.valueOf(dto.brandId()));
+    Category category = categoryRepository.getReferenceById(Long.valueOf(dto.categoryId()));
     var product = new Product(dto, brand, category);
     productRepository.save(product);
 

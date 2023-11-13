@@ -1,5 +1,5 @@
 ### -------------------- List --------------------
-GET http://localhost:8080/product?page=10
+GET http://localhost:8080/product?page=1
 
 ### -------------------- List by range --------------------
 GET http://localhost:8080/product/range?page=0
@@ -19,7 +19,7 @@ content-type: application/json
 }
 
 ### -------------------- Search by ID --------------------
-GET http://localhost:8080/product/10116
+GET http://localhost:8080/product/10119
 
 ### -------------------- Create --------------------
 POST http://localhost:8080/product
@@ -30,7 +30,7 @@ content-type: application/json
   "price": 129.17,
   "description": "",
   "brandId": 1000,
-  "categoryId": 105
+  "categoryId": 104
 }
 
 ### -------------------- Update --------------------
