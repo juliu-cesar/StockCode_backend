@@ -7,7 +7,7 @@ content-type: application/json
 
 {
   "lowestPrice": 100,
-  "biggestPrice": 400
+  "biggestPrice": 300
 }
 
 ### -------------------- List by brand --------------------
@@ -19,7 +19,7 @@ content-type: application/json
 }
 
 ### -------------------- Search by ID --------------------
-GET http://localhost:8080/product/10119
+GET http://localhost:8080/product/10122
 
 ### -------------------- Create --------------------
 POST http://localhost:8080/product
@@ -56,4 +56,4 @@ GET http://localhost:8080/product/10039
 
 
 ### -------------------- Delete by ID --------------------
-DELETE http://localhost:8080/product/10115
+DELETE http://localhost:8080/product/10121

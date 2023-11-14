@@ -1,8 +1,8 @@
 ### -------------------- List --------------------
-GET http://localhost:8080/transaction?page=6
+GET http://localhost:8080/transaction?page=3
 
 ### -------------------- List by ID --------------------
-GET http://localhost:8080/transaction/100123
+GET http://localhost:8080/transaction/100071
 
 ### -------------------- Create 1 --------------------
 POST http://localhost:8080/transaction
@@ -73,30 +73,37 @@ PUT http://localhost:8080/transaction
 Content-Type: application/json
 
 {
-  "transactionId": 100123,
+  "transactionId": 100071,
   "listRefoundProduct": [
     {
-      "purchasedItemId": 1000460,
+      "purchasedItemId": 1000246,
       "amountRefunded": 1,
       "reason": "UNHAPPY_COSTUMER",
       "returnedToStock": true,
-      "description": "cliente não precisou de dois marteletes."
+      "description": "cliente não precisou de duas lixadeiras."
     },
     {
-      "purchasedItemId": 1000462,
+      "purchasedItemId": 1000248,
+      "amountRefunded": 2,
+      "reason": "PRODUCT_DEFECT",
+      "returnedToStock": false,
+      "description": "parafuso com defeito na rosca"
+    },
+    {
+      "purchasedItemId": 1000245,
       "amountRefunded": 1,
       "reason": "PRODUCT_DEFECT",
       "returnedToStock": false,
-      "description": "chave trava mesmo apos parar de fazer foça."
+      "description": "cabeçote com amassado"
     },
     {
-      "purchasedItemId": 1000461,
-      "amountRefunded": 6,
-      "reason": "PRODUCT_DEFECT",
+      "purchasedItemId": 1000247,
+      "amountRefunded": 1,
+      "reason": "UNHAPPY_COSTUMER",
       "returnedToStock": true,
-      "description": "Parafusos com defeito na rosca."
+      "description": "cliente não gostou do corte da tesoura"
     }
   ]
 }
 ### -------------------- Detail Refound by transactionID --------------------
-GET http://localhost:8080/transaction/refound/100143
+GET http://localhost:8080/transaction/refound/100071
