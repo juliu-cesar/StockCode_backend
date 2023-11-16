@@ -15,7 +15,7 @@ POST http://localhost:8080/stock
 content-type: application/json
 
 {
-	"productId": 10116,
+	"productId": 10119,
 	"amount": 20,
 	"location": "70B12A"
 }
